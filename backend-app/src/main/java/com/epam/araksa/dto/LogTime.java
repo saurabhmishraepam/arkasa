@@ -9,6 +9,16 @@ public class LogTime {
     private long startTime;
     private long day;
     private int minutesTaken;
+    private ClassifiedWorkingDays cWD;
+
+
+    public ClassifiedWorkingDays getcWD() {
+        return cWD;
+    }
+
+    public void setcWD(ClassifiedWorkingDays cWD) {
+        this.cWD = cWD;
+    }
 
     public float getDistanceInKM() {
         return distanceInKM;
@@ -85,6 +95,9 @@ public class LogTime {
                 ", outTime=" + outTime +
                 ", startTime=" + startTime +
                 ", day=" + day +
+                ", minutesTaken=" + minutesTaken +
+                ", cWD=" + cWD +
+                ", distanceInKM=" + distanceInKM +
                 '}';
     }
 }
