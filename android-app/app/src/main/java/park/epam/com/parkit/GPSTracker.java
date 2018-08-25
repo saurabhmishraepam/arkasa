@@ -237,7 +237,8 @@ public class GPSTracker extends Service implements LocationListener {
             locationRequest.setCurrentDistanceInKms(trix.rows[0].elements[0].distance.inMeters);
             locationRequest.setTimeToReachOffice(trix.rows[0].elements[0].durationInTraffic.inSeconds);
             locationRequest.setLastUpdated(now.getMillis());
-            locationRequest.setCurrent(new park.epam.com.parkit.dto.Location(loc.getLatitude(), loc.getLongitude()));
+            locationRequest.setLat(loc.getLatitude());
+            locationRequest.setLang(loc.getLongitude());
             this.locationRequestDto = locationRequest;
             return distApart;
         } catch (Exception e) {
