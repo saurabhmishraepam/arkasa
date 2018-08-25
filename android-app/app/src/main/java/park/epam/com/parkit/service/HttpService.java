@@ -16,7 +16,7 @@ import java.util.Map;
 import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
 
 public class HttpService {
-    public Object sendPutRequest(String URL, Map<String,String> params){
+    public Object sendPutRequest(String URL, Map<String,Object> params){
         try {
             Log.d("URL:",URL);
             URL urlObj = new URL(URL);
