@@ -39,7 +39,7 @@ public class RegistraionActivity extends AppCompatActivity {
         parkingTypeDropdown.setAdapter(adapter);
         httpService = new HttpService();
     }
-    public void onClickAddName(View view) {git
+    public void onClickAddName(View view) {
         // Add a new student record
         ContentValues values = new ContentValues();
         String emp_name= ((EditText)findViewById(R.id.input_name)).getText().toString();
