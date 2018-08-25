@@ -18,9 +18,8 @@ import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
 public class HttpService {
     public Object sendPutRequest(String URL, Map<String,String> params){
         try {
-            String url = APP_SERVER_URL + "emp/add";
-            Log.d("URL:",url);
-            URL urlObj = new URL(url);
+            Log.d("URL:",URL);
+            URL urlObj = new URL(URL);
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("PUT");
@@ -45,7 +44,9 @@ public class HttpService {
                 sb.append(line);
                 break;
             }
-            return sb.toString();
+            String response = sb.toString();
+            Log.d("Response message :",response);
+            return responsecode;
         } catch (IOException e) {
             e.printStackTrace();
         }

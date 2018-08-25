@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
 import park.epam.com.parkit.service.HttpService;
+
+import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
 
 public class RegistraionActivity extends AppCompatActivity {
 
@@ -48,12 +51,14 @@ public class RegistraionActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                httpService.callHttpService(map);
+                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/add", map);
+                Log.d("Response Code :", response.toString());
+
             }
         });
 
         Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
+                "Registration Successful..", Toast.LENGTH_LONG).show();
     }
     public void onClickRetrieveEmployee(View view) {
         // Retrieve student records
