@@ -1,17 +1,24 @@
 package park.epam.com.parkit;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.maps.DirectionsApi;
 import com.google.maps.DistanceMatrixApi;
@@ -30,6 +37,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
+import park.epam.com.parkit.cached.EmployeeCached;
 import park.epam.com.parkit.constants.GoogleToken;
 import park.epam.com.parkit.constants.OfficeLoc;
 import park.epam.com.parkit.dto.LocationRequestDto;
@@ -48,6 +56,15 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude; // longitude
     String distanceAll;
     public LocationRequestDto locationRequestDto;
+
+    public LocationManager getLocationManager() {
+        return locationManager;
+    }
+
+    public void setLocationManager(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
@@ -60,9 +77,11 @@ public class GPSTracker extends Service implements LocationListener {
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
+
     }
 
     public Location getLocation() {
+
 
         try {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
@@ -120,8 +139,9 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        distanceAll = "Distance: " + getDurationForRoute(location, "", "") + "\nLat:" + location.getLatitude() + "\nLong:" + location.getLongitude();
-
+        if (location != null) {
+            distanceAll = "Distance: " + getDurationForRoute(location, "", "") + "\nLat:" + location.getLatitude() + "\nLong:" + location.getLongitude();
+        }
 
 
         return location;
@@ -137,6 +157,7 @@ public class GPSTracker extends Service implements LocationListener {
             locationManager.removeUpdates(GPSTracker.this);
         }
     }
+
     public double getLatitude() {
         if (location != null) {
             latitude = location.getLatitude();
@@ -144,6 +165,7 @@ public class GPSTracker extends Service implements LocationListener {
         // return latitude
         return latitude;
     }
+
     public double getLongitude() {
         if (location != null) {
             longitude = location.getLongitude();
@@ -152,6 +174,7 @@ public class GPSTracker extends Service implements LocationListener {
         // return longitude
         return longitude;
     }
+
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
@@ -189,7 +212,7 @@ public class GPSTracker extends Service implements LocationListener {
         // - We need a context to access the API
 
 
-        LocationRequestDto locationRequest=new LocationRequestDto();
+        LocationRequestDto locationRequest = new LocationRequestDto();
         GeoApiContext geoApiContext = new GeoApiContext.Builder()
                 .apiKey(GoogleToken.apitoken)
                 .build();
@@ -214,8 +237,9 @@ public class GPSTracker extends Service implements LocationListener {
             locationRequest.setCurrentDistanceInKms(trix.rows[0].elements[0].distance.inMeters);
             locationRequest.setTimeToReachOffice(trix.rows[0].elements[0].durationInTraffic.inSeconds);
             locationRequest.setLastUpdated(now.getMillis());
-            locationRequest.setCurrent(new park.epam.com.parkit.dto.Location(loc.getLatitude(), loc.getLongitude()));
-            this.locationRequestDto=locationRequest;
+            locationRequest.setLat(loc.getLatitude());
+            locationRequest.setLang(loc.getLongitude());
+            this.locationRequestDto = locationRequest;
             return distApart;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -231,9 +255,36 @@ public class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
-
+    
+    public String getRegisterdEmp() {
+        Log.d("Registerd emp :", "");
+        EmployeeCached employeeCached = new EmployeeCached();
+        Log.d("Employee Id cache", employeeCached.getEmployeeId());
+        return employeeCached.getEmployeeId();
+    }
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("On Location change","...");
+        GPSTracker gps = new GPSTracker( this);
+
+        String empId = getRegisterdEmp();
+        Log.d("Employee Id :",empId);
+        LocationRequestDto locationRequestDto = new LocationRequestDto();
+        locationRequestDto.setEmpId(empId);
+        gps.locationRequestDto = locationRequestDto;
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            Log.d("Lat:",String.valueOf(latitude));
+            Log.d("Long:",String.valueOf(longitude));
+            Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+           // addNotification(gps.distanceAll);
+        } else {
+            gps.showSettingsAlert();
+        }
+
     }
 
     @Override

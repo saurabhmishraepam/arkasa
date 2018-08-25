@@ -9,6 +9,40 @@ public class LogTime {
     private long startTime;
     private long day;
     private int minutesTaken;
+    private ClassifiedWorkingDays cWD;
+    private Season season;
+
+    public Season getSeason() {
+        return season;
+    }
+
+    @Override
+    public String toString() {
+        return "LogTime{" +
+                "empId='" + empId + '\'' +
+                ", Id='" + Id + '\'' +
+                ", inTime=" + inTime +
+                ", outTime=" + outTime +
+                ", startTime=" + startTime +
+                ", day=" + day +
+                ", minutesTaken=" + minutesTaken +
+                ", cWD=" + cWD +
+                ", season=" + season +
+                ", distanceInKM=" + distanceInKM +
+                '}';
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public ClassifiedWorkingDays getcWD() {
+        return cWD;
+    }
+
+    public void setcWD(ClassifiedWorkingDays cWD) {
+        this.cWD = cWD;
+    }
 
     public float getDistanceInKM() {
         return distanceInKM;
@@ -76,15 +110,4 @@ public class LogTime {
         this.day = day;
     }
 
-    @Override
-    public String toString() {
-        return "LogTime{" +
-                "empId='" + empId + '\'' +
-                ", Id='" + Id + '\'' +
-                ", inTime=" + inTime +
-                ", outTime=" + outTime +
-                ", startTime=" + startTime +
-                ", day=" + day +
-                '}';
-    }
 }
