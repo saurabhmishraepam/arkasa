@@ -2,112 +2,102 @@ package com.epam.araksa.dto;
 
 public class EmployeeLocation {
 
+	private String id;
+	private String empId;
+	private Location current;
+	private long lastUpdated;
+	private int updateCount;
+	private Boolean isMovingToOffice;
+	private long timeToReachOffice;
+	private long currentDistanceInKms;
+	private boolean isComing;
 
-    private String id;
-    private String empId;
-    private Location current;
-    private long lastUpdated;
-    private int updateCount;
-    private Boolean isMovingToOffice;
-    private long timeToReachOffice;
-    private long currentDistanceInKms;
+	@Override
+	public String toString() {
+		return "EmployeeLocation{" + "id='" + id + '\'' + ", empId='" + empId + '\'' + ", current=" + current
+				+ ", lastUpdated=" + lastUpdated + ", updateCount=" + updateCount + ", isMovingToOffice="
+				+ isMovingToOffice + ", timeToReachOffice=" + timeToReachOffice + ", currentDistanceInKms="
+				+ currentDistanceInKms + ", isComing=" + isComing + '}';
+	}
 
-    @Override
-    public String toString() {
-        return "EmployeeLocation{" +
-                "id='" + id + '\'' +
-                ", empId='" + empId + '\'' +
-                ", current=" + current +
-                ", lastUpdated=" + lastUpdated +
-                ", updateCount=" + updateCount +
-                ", isMovingToOffice=" + isMovingToOffice +
-                ", timeToReachOffice=" + timeToReachOffice +
-                ", currentDistanceInKms=" + currentDistanceInKms +
-                ", isComing=" + isComing +
-                '}';
-    }
+	public boolean isComing() {
+		return isComing;
+	}
 
-    public boolean isComing() {
-        return isComing;
-    }
+	public void setComing(boolean coming) {
+		isComing = coming;
+	}
 
-    public void setComing(boolean coming) {
-        isComing = coming;
-    }
+	public String getId() {
+		return id;
+	}
 
-    private boolean isComing;
+	public void setId(String id) {
+		this.id = id;
+	}
 
+	public long getTimeToReachOffice() {
+		return timeToReachOffice;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public void setTimeToReachOffice(long timeToReachOffice) {
+		this.timeToReachOffice = timeToReachOffice;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public long getDistanceCurrentInKms() {
+		return currentDistanceInKms;
+	}
 
-    public long getTimeToReachOffice() {
-        return timeToReachOffice;
-    }
+	public void setDistanceCurrentInKms(long distanceCurrentInKms) {
+		this.currentDistanceInKms = distanceCurrentInKms;
+	}
 
-    public void setTimeToReachOffice(long timeToReachOffice) {
-        this.timeToReachOffice = timeToReachOffice;
-    }
+	public Location getCurrent() {
+		return current;
+	}
 
-    public long getDistanceCurrentInKms() {
-        return currentDistanceInKms;
-    }
+	public void setCurrent(Location current) {
+		this.current = current;
+	}
 
-    public void setDistanceCurrentInKms(long distanceCurrentInKms) {
-        this.currentDistanceInKms = distanceCurrentInKms;
-    }
+	public long getLastUpdated() {
+		return lastUpdated;
+	}
 
-    public Location getCurrent() {
-        return current;
-    }
+	public void setLastUpdated(long lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
 
-    public void setCurrent(Location current) {
-        this.current = current;
-    }
+	public int getUpdateCount() {
+		return updateCount;
+	}
 
-    public long getLastUpdated() {
-        return lastUpdated;
-    }
+	public void setUpdateCount(int updateCount) {
+		this.updateCount = updateCount;
+	}
 
-    public void setLastUpdated(long lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+	public Boolean getMovingToOffice() {
+		return isMovingToOffice;
+	}
 
-    public int getUpdateCount() {
-        return updateCount;
-    }
+	public void setMovingToOffice(Boolean movingToOffice) {
+		isMovingToOffice = movingToOffice;
+	}
 
-    public void setUpdateCount(int updateCount) {
-        this.updateCount = updateCount;
-    }
+	public String getEmpId() {
+		return empId;
+	}
 
-    public Boolean getMovingToOffice() {
-        return isMovingToOffice;
-    }
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
 
-    public void setMovingToOffice(Boolean movingToOffice) {
-        isMovingToOffice = movingToOffice;
-    }
+	public long getCurrentDistanceInKms() {
+		return currentDistanceInKms;
+	}
 
-    public String getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(String empId) {
-        this.empId = empId;
-    }
-
-    public long getCurrentDistanceInKms() {
-        return currentDistanceInKms;
-    }
-
-    public void setCurrentDistanceInKms(long currentDistanceInKms) {
-        this.currentDistanceInKms = currentDistanceInKms;
-    }
+	public void setCurrentDistanceInKms(long currentDistanceInKms) {
+		this.currentDistanceInKms = currentDistanceInKms;
+	}
 
 }
