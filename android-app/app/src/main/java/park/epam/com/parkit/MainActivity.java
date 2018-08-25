@@ -75,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         timeCreator();
-       /// EmployeeCached.details.setEmpId("123456");
+
+       //EmployeeCached.details.setEmpId("123456");
+
         if (EmployeeCached.details.getEmpId() != null) {
 
             findViewById(R.id.open_register_button).setVisibility(View.GONE);
