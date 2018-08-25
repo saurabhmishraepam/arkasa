@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
     GPSTracker gps;
     HttpService httpService;
 
+    public void onClickToAdminActivity(View view){
+        Intent intent = new Intent(this, AdminActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -79,20 +84,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-       gps = new GPSTracker(MainActivity.this);
-     // check if GPS enabled
-       if (gps.canGetLocation()) {
-         double latitude = gps.getLatitude();
-          double longitude = gps.getLongitude();
-           //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
-          addNotification(gps.distanceAll);
+        gps = new GPSTracker(MainActivity.this);
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+            addNotification(gps.distanceAll);
 
 
-
-      } else {
-          gps.showSettingsAlert();
-       }
-
+        } else {
+            gps.showSettingsAlert();
+        }
 
 
         AsyncTask.execute(new Runnable() {
@@ -103,18 +106,18 @@ public class MainActivity extends AppCompatActivity {
 
                 ObjectMapper mapper = new ObjectMapper();
 
-                Map<String,Object> map = new HashMap<>();
-                map.put("empId",locationRequestDto.getEmpId());
-                map.put("id",locationRequestDto.getId());
+                Map<String, Object> map = new HashMap<>();
+                map.put("empId", locationRequestDto.getEmpId());
+                map.put("id", locationRequestDto.getId());
 
-                map.put("lastUpdated",new DateTime().getMillis()+"");
-                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
-                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
-                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
-                map.put("lat",locationRequestDto.getLat()+"");
-                map.put("lang",locationRequestDto.getLang()+"");
-                httpService=new HttpService();
-                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                map.put("lastUpdated", new DateTime().getMillis() + "");
+                map.put("isMovingToOffice", EmployeeCached.isComingToOffice + "");
+                map.put("timeToReachOffice", locationRequestDto.getTimeToReachOffice() + "");
+                map.put("currentDistanceInKms", locationRequestDto.getCurrentDistanceInKms() + "");
+                map.put("lat", locationRequestDto.getLat() + "");
+                map.put("lang", locationRequestDto.getLang() + "");
+                httpService = new HttpService();
+                Object response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                 Log.d("Response Code :", response.toString());
 
             }
@@ -164,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        Button notify = (Button) findViewById(R.id.notify);
+       /* Button notify = (Button) findViewById(R.id.notify);
 
         notify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+*/
         addNotificationPending("First notification");
       /*  displayNotification("");
         displayNotification("");
@@ -390,10 +393,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getRegisterdEmp() {
-        Log.d("Registerd emp :","");
+        Log.d("Registerd emp :", "");
         EmployeeCached employeeCached = new EmployeeCached();
-        Log.d("Employee Id cache",employeeCached.getEmployeeId());
-        return  employeeCached.getEmployeeId();
+        Log.d("Employee Id cache", employeeCached.getEmployeeId());
+        return employeeCached.getEmployeeId();
         /*String URL = "content://park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider";
         Cursor cc = mDatabase.rawQuery("SELECT employeeId from employees limit 1",null);
         cc.moveToFirst();
@@ -423,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
                 gps = new GPSTracker(MainActivity.this);
 
                 String empId = getRegisterdEmp();
-                Log.d("Employee Id :",empId);
+                Log.d("Employee Id :", empId);
                 LocationRequestDto locationRequestDto = new LocationRequestDto();
                 locationRequestDto.setEmpId(empId);
                 gps.locationRequestDto = locationRequestDto;
@@ -441,8 +444,6 @@ public class MainActivity extends AppCompatActivity {
         };
         timerObj.schedule(timerTaskObj, 50000, 20000);
 
-    public void onClickToAdminActivity(View view){
-        Intent intent = new Intent(this, AdminActivity.class);
-        startActivity(intent);
+
     }
 }
