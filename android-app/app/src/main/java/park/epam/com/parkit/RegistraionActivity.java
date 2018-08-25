@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+import park.epam.com.parkit.cached.EmployeeCached;
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
 import park.epam.com.parkit.service.HttpService;
 
@@ -67,6 +68,8 @@ public class RegistraionActivity extends AppCompatActivity {
             }
         });
 
+        EmployeeCached.details.setEmpId(emp_id);
+        EmployeeCached.details.setActive(true);
         Toast.makeText(getBaseContext(),
                 "Registration Successful..", Toast.LENGTH_LONG).show();
     }

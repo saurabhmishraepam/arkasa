@@ -28,9 +28,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,6 +42,7 @@ import park.epam.com.parkit.cached.EmployeeCached;
 import park.epam.com.parkit.dto.EmployeeDetails;
 import park.epam.com.parkit.dto.LocationRequestDto;
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
+import park.epam.com.parkit.service.HttpService;
 
 import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
 import static park.epam.com.parkit.constants.AppConstant.DATABASE_NAME;
@@ -51,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     GPSTracker gps;
-
+    HttpService httpService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        httpService=new HttpService();
         Log.d("oncrear", "created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -71,27 +77,42 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        gps = new GPSTracker(MainActivity.this);
-//        // check if GPS enabled
-//        if (gps.canGetLocation()) {
-//
-//            double latitude = gps.getLatitude();
-//            double longitude = gps.getLongitude();
-//            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
-//            addNotification(gps.distanceAll);
-//        } else {
-//            gps.showSettingsAlert();
-//        }
-//        LocationRequestDto locationRequestDto = gps.locationRequestDto;
-       // timeCreator();
-//       AsyncTask.execute(new Runnable() {
-//           @Override
-//            public void run() {
-//                timeCreator();
-//                Log.d("Response Code :", "testing");
-//
-//            }
-//        });
+       gps = new GPSTracker(MainActivity.this);
+     // check if GPS enabled
+       if (gps.canGetLocation()) {
+         double latitude = gps.getLatitude();
+          double longitude = gps.getLongitude();
+           //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+          addNotification(gps.distanceAll);
+
+
+
+      } else {
+          gps.showSettingsAlert();
+       }
+
+
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                LocationRequestDto locationRequestDto = gps.locationRequestDto;
+                Map<String,String> map = new HashMap<>();
+                map.put("empId",locationRequestDto.getEmpId());
+                map.put("id",locationRequestDto.getId());
+                map.put("current",locationRequestDto.getCurrent().toString());
+
+                map.put("lastUpdated",new DateTime().getMillis()+"");
+                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
+                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
+                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
+
+                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                Log.d("Response Code :", response.toString());
+
+            }
+        });
+
 
         //EmployeeCached.details.setEmpId("123456");
 
@@ -138,12 +159,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         addNotificationPending("");
-      /*  displayNotification("");
-        displayNotification("");
-        displayNotification("");
-        displayNotification("");
-        displayNotification("");
-        displayNotification("");*/
 
 
     }
