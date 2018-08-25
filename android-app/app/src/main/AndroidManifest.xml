@@ -63,7 +63,7 @@
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".DashboardActivity"></activity>
     </application>
 
 </manifest>

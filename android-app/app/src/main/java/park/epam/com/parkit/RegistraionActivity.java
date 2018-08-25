@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -16,7 +19,12 @@ import java.util.Map;
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
 import park.epam.com.parkit.service.HttpService;
 
+import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
+
 public class RegistraionActivity extends AppCompatActivity {
+    private static final String[] PARKING_TYPES = new String[] {
+            "Dedicated","Floaters"
+    };
 
     Map<String,String> map = new HashMap<>();
     HttpService httpService;
@@ -24,6 +32,11 @@ public class RegistraionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraion);
+        Spinner parkingTypeDropdown = findViewById(R.id.input_paring_type);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, PARKING_TYPES);
+        parkingTypeDropdown.setAdapter(adapter);
         httpService = new HttpService();
     }
     public void onClickAddName(View view) {
@@ -48,12 +61,14 @@ public class RegistraionActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                httpService.callHttpService(map);
+                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/add", map);
+                Log.d("Response Code :", response.toString());
+
             }
         });
 
         Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
+                "Registration Successful..", Toast.LENGTH_LONG).show();
     }
     public void onClickRetrieveEmployee(View view) {
         // Retrieve student records
