@@ -28,6 +28,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     HttpService httpService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        httpService=new HttpService();
+
         Log.d("oncrear", "created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -97,16 +99,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 LocationRequestDto locationRequestDto = gps.locationRequestDto;
+
+
+                ObjectMapper mapper = new ObjectMapper();
+
                 Map<String,String> map = new HashMap<>();
                 map.put("empId",locationRequestDto.getEmpId());
                 map.put("id",locationRequestDto.getId());
-                map.put("current",locationRequestDto.getCurrent().toString());
 
                 map.put("lastUpdated",new DateTime().getMillis()+"");
                 map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
                 map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
                 map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
+                String json ="";
+                try {
+                  json = mapper.writeValueAsString(locationRequestDto.getCurrent());
+                }catch(Exception ex){
 
+                }
+                map.put("current",json);
+                httpService=new HttpService();
                 Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                 Log.d("Response Code :", response.toString());
 
