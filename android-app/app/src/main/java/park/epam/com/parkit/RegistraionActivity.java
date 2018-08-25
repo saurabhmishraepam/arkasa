@@ -22,10 +22,10 @@ public class RegistraionActivity extends AppCompatActivity {
         // Add a new student record
         ContentValues values = new ContentValues();
         values.put(EmplyeeProvider.NAME,
-                ((EditText)findViewById(R.id.editText2)).getText().toString());
+                ((EditText)findViewById(R.id.input_name)).getText().toString());
 
         values.put(EmplyeeProvider.EMPID,
-                ((EditText)findViewById(R.id.editText3)).getText().toString());
+                ((EditText)findViewById(R.id.input_eid)).getText().toString());
 
         Uri uri = getContentResolver().insert(
                 EmplyeeProvider.CONTENT_URI, values);
