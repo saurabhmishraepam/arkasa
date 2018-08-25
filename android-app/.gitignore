@@ -1,3 +1,30 @@
+<<<<<<< HEAD
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+=======
 *.iml
 .gradle
 .idea
@@ -9,3 +36,4 @@
 /build
 /captures
 .externalNativeBuild
+>>>>>>> a70f1fe90232cd97b50c0b1f3151f5f0165062de
