@@ -9,6 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +36,11 @@ import java.util.TimerTask;
 
 import park.epam.com.parkit.cached.EmployeeCached;
 import park.epam.com.parkit.dto.EmployeeDetails;
+import park.epam.com.parkit.dto.LocationRequestDto;
+import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
+
+import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
+import static park.epam.com.parkit.constants.AppConstant.DATABASE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnRegister;
     private static final int REQUEST_CODE_PERMISSION = 2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
-
     GPSTracker gps;
 
     @Override
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createNotificationChannel();
+
         try {
             if (ActivityCompat.checkSelfPermission(this, mPermission)
                     != MockPackageManager.PERMISSION_GRANTED) {
@@ -62,21 +71,29 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        gps = new GPSTracker(MainActivity.this);
-        // check if GPS enabled
-        if (gps.canGetLocation()) {
+//        gps = new GPSTracker(MainActivity.this);
+//        // check if GPS enabled
+//        if (gps.canGetLocation()) {
+//
+//            double latitude = gps.getLatitude();
+//            double longitude = gps.getLongitude();
+//            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+//            addNotification(gps.distanceAll);
+//        } else {
+//            gps.showSettingsAlert();
+//        }
+//        LocationRequestDto locationRequestDto = gps.locationRequestDto;
+       // timeCreator();
+//       AsyncTask.execute(new Runnable() {
+//           @Override
+//            public void run() {
+//                timeCreator();
+//                Log.d("Response Code :", "testing");
+//
+//            }
+//        });
 
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
-            addNotification(gps.distanceAll);
-        } else {
-            gps.showSettingsAlert();
-        }
-
-        timeCreator();
-
-       //EmployeeCached.details.setEmpId("123456");
+        //EmployeeCached.details.setEmpId("123456");
 
         if (EmployeeCached.details.getEmpId() != null) {
 
@@ -178,14 +195,13 @@ public class MainActivity extends AppCompatActivity {
         Bundle yesBundle = new Bundle();
         yesBundle.putInt("userAnswer", 1);//This is the value I want to pass
         yesReceive.putExtras(yesBundle);
-      //  yesReceive.setAction(CUSTOM_INTENT);
+        //  yesReceive.setAction(CUSTOM_INTENT);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
 
         PendingIntent pendingIntentNo = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.addAction(R.drawable.notification, "Yes", pendingIntentYes);
         builder.addAction(R.drawable.notification, "No", pendingIntentNo);
-
 
 
         builder.setContentIntent(pendingIntentYes);
@@ -196,11 +212,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    int numMessages = 1;
 
-
-
-
-   int  numMessages=1;
     protected void displayNotification(String message) {
         Log.i("Start", "notification");
 
@@ -233,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         inboxStyle.setBigContentTitle("Big Title Details:");
 
         // Moves events into the big view
-        for (int i=0; i < events.length; i++) {
+        for (int i = 0; i < events.length; i++) {
             inboxStyle.addLine(events[i]);
         }
 
@@ -247,17 +260,13 @@ public class MainActivity extends AppCompatActivity {
 
         /* Adds the Intent that starts the Activity to the top of the stack */
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         /* notificationID allows you to update the notification later on. */
         manager.notify(0, mBuilder.build());
     }
-
-
-
-
 
 
     @Override
@@ -298,15 +307,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String getRegisterdEmp() {
+        Log.d("Registerd emp :","");
+        EmployeeCached employeeCached = new EmployeeCached();
+        Log.d("Employee Id cache",employeeCached.getEmployeeId());
+        return  employeeCached.getEmployeeId();
+        /*String URL = "content://park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider";
+        Cursor cc = mDatabase.rawQuery("SELECT employeeId from employees limit 1",null);
+        cc.moveToFirst();
+        String empId =  cc.getString(0);
+        Log.d("empId:",empId);
+        Uri employee = Uri.parse(URL);
+        Cursor c = managedQuery(employee, null, null, null, "name");
+
+        if (c.moveToFirst()) {
+            do {
+                String s = c.getString(c.getColumnIndex(EmplyeeProvider._ID)) +
+                        ", " + c.getString(c.getColumnIndex(EmplyeeProvider.NAME)) +
+                        ", " + c.getString(c.getColumnIndex(EmplyeeProvider.EMPID));
+                Log.d("emp value :", s);
+                Toast.makeText(this, s,
+                        Toast.LENGTH_SHORT).show();
+
+            } while (c.moveToNext());
+        }*/
+    }
+
     public void timeCreator() {
+
         Timer timerObj = new Timer();
         TimerTask timerTaskObj = new TimerTask() {
             public void run() {
                 Log.d("calling ", "time bomb");
-                ///  addNotification("notification from timer");
+                gps = new GPSTracker(MainActivity.this);
+
+                String empId = getRegisterdEmp();
+                Log.d("Employee Id :",empId);
+                LocationRequestDto locationRequestDto = new LocationRequestDto();
+                locationRequestDto.setEmpId(empId);
+                gps.locationRequestDto = locationRequestDto;
+                // check if GPS enabled
+                if (gps.canGetLocation()) {
+
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+                    //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+                    addNotification(gps.distanceAll);
+                } else {
+                    gps.showSettingsAlert();
+                }
             }
         };
-        timerObj.schedule(timerTaskObj, 0, 20000);
+        timerObj.schedule(timerTaskObj, 50000, 20000);
 
     }
 }

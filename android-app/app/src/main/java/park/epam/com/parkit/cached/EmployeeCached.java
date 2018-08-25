@@ -6,4 +6,10 @@ public class EmployeeCached {
 
     public static EmployeeDetails details=new EmployeeDetails();
 
+    public String getEmployeeId(){
+        EmployeeDetails employeeDetails = new EmployeeDetails();
+        employeeDetails.setEmpId("1234");
+        return employeeDetails.getEmpId();
+    }
+
 }
