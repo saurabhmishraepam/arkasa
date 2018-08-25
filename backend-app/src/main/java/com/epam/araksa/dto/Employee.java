@@ -6,52 +6,106 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "emp_details")
 public class Employee {
 
-	 private String empId;
-	 private String empName;
-	 private Integer mobileNumber;
-	 private String parkType;
-	 private Boolean isActive;
-	 private String dateRegistered;
-	 
-	
+	private String empId;
+	private String empName;
+	private String mobileNumber;
+	private ParkType parkType;
+	private Boolean isActive;
+	private Long dateRegistered;
+	private String jobLevel;
+	private String projectTag;
+	private JobFunction jFun;
+	private String department;
+
+	public JobFunction getjFun() {
+		return jFun;
+	}
+
+	public void setjFun(JobFunction jFun) {
+		this.jFun = jFun;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+
+	public Boolean getActive() {
+		return isActive;
+	}
+
+	public void setActive(Boolean active) {
+		isActive = active;
+	}
+
+	public String getJobLevel() {
+		return jobLevel;
+	}
+
+	public void setJobLevel(String jobLevel) {
+		this.jobLevel = jobLevel;
+	}
+
+	public String getProjectTag() {
+		return projectTag;
+	}
+
+	public void setProjectTag(String projectTag) {
+		this.projectTag = projectTag;
+	}
+
 	public String getEmpId() {
 		return empId;
 	}
+
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
+
 	public String getEmpName() {
 		return empName;
 	}
+
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
-	public Integer getMobileNumber() {
+
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
-	public void setMobileNumber(Integer mobileNumber) {
+
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	
-	public String getParkType() {
+
+	public ParkType getParkType() {
 		return parkType;
 	}
-	public void setParkType(String parkType) {
+
+	public void setParkType(ParkType parkType) {
 		this.parkType = parkType;
 	}
+
 	public Boolean getIsActive() {
 		return isActive;
 	}
+
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	public String getDateRegistered() {
+
+	public Long getDateRegistered() {
 		return dateRegistered;
 	}
-	public void setDateRegistered(String dateRegistered) {
+
+	public void setDateRegistered(Long dateRegistered) {
 		this.dateRegistered = dateRegistered;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -71,7 +125,7 @@ public class Employee {
 		builder.append("]");
 		return builder.toString();
 	}
-	 
+
 	 
 	 
 }
