@@ -5,24 +5,24 @@ import java.sql.Timestamp;
 public class EmployeeStatus {
 
 	private String empId;
-	private boolean isComing;
-	private Timestamp time;
+	private Boolean isComing;
+	private long time;
 	public String getEmpId() {
 		return empId;
 	}
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
-	public boolean isComing() {
+	public Boolean isComing() {
 		return isComing;
 	}
-	public void setComing(boolean isComing) {
+	public void setisComing(Boolean isComing) {
 		this.isComing = isComing;
 	}
-	public Timestamp getTime() {
+	public Long getTime() {
 		return time;
 	}
-	public void setTime(Timestamp time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
 	@Override
