@@ -1,92 +1,89 @@
 /**
- * 
+ *
  */
 package com.epam.araksa.core;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.springframework.stereotype.Service;
-
+import com.epam.araksa.dto.AppConstantsParkingSlots;
+import com.epam.araksa.dto.Dashboard;
 import com.epam.araksa.dto.EmpLocationCategoryEnum;
 import com.epam.araksa.dto.EmployeeLocation;
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Rakesh_Gupta
- *
  */
 @Service
 public class EmpLocationPool {
 
-	List<EmployeeLocation> emList;
-	Map<String, EmployeeLocation> priorityEmployeeLocations;
-	private static int MAX_EMP_POOL_SIZE;
-	private Map<EmpLocationCategoryEnum, List<EmployeeLocation>> map;
+    Map<String, EmployeeLocation> priorityEmployeeLocations = new TreeMap<>();
+    private Map<Integer, List<EmployeeLocation>> timeBuckets = new HashMap<>();
 
-	public EmpLocationPool(List<EmployeeLocation> emList) {
-		this();
-		this.emList = emList;
-		prepareEmployeeLocationsBuckets(this.emList);
-	}
+    public void updateEmployeeLocation(EmployeeLocation employeeLocation) {
+        updateEmployeeLocationPool(employeeLocation);
+        prepareEmployeeLocationsBucket(employeeLocation);
+    }
 
-	public EmpLocationPool() {
+    private void prepareEmployeeLocationsBucket(EmployeeLocation emLoc) {
+        Long timeToReachOffice = emLoc.getTimeToReachOffice();
+        if (timeToReachOffice > 0) {
 
-		priorityEmployeeLocations = new TreeMap<>();
-	}
+            int key = (int) (timeToReachOffice / 5);
+            if (timeBuckets.get(key * 5) == null) {
+                List<EmployeeLocation> empLis = new ArrayList<>();
+                empLis.add(emLoc);
+                timeBuckets.put(key * 5, empLis);
 
-	public void updateEmployeeLocation(EmployeeLocation employeeLocation) {
-		updateEmployeeLocationPool(employeeLocation);
-		prepareEmployeeLocationsBucket(employeeLocation);
+            } else {
+                timeBuckets.get(key * 5).add(emLoc);
 
-	}
+            }
+        }
+    }
 
-	private void prepareEmployeeLocationsBuckets(List<EmployeeLocation> emList) {
-		for (EmployeeLocation EmployeeLocation : emList) {
-			if (EmployeeLocation != null) {
-				prepareEmployeeLocationsBucket(EmployeeLocation);
-			}
-		}
-	}
+    private void updateEmployeeLocationPool(EmployeeLocation employeeLocation) {
+        priorityEmployeeLocations.put(employeeLocation.getEmpId(), employeeLocation);
+    }
 
-	private void prepareEmployeeLocationsBucket(EmployeeLocation emLoc) {
-		Long timeToReachOffice = emLoc.getTimeToReachOffice();
-		if (timeToReachOffice > 0) {
-			if (timeToReachOffice < 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_1_MIN).add(emLoc);
-			} else if (timeToReachOffice < 5 * 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_5_MIN).add(emLoc);
-			} else if (timeToReachOffice < 10 * 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_10_MIN).add(emLoc);
-			} else if (timeToReachOffice < 15 * 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_15_MIN).add(emLoc);
-			} else if (timeToReachOffice < 20 * 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_20_MIN).add(emLoc);
-			} else if (timeToReachOffice < 25 * 60) {
-				map.get(EmpLocationCategoryEnum.EMP_LIST_WITHIN_25_MIN).add(emLoc);
-			}
-		}
-	}
 
-	private void updateEmployeeLocationPool(EmployeeLocation employeeLocation) {
-		priorityEmployeeLocations.put(employeeLocation.getEmpId(), employeeLocation);
-	}
+    public Dashboard getEmployeeFromCache(EmployeeLocation employeeLocation) {
+        Dashboard dasboardResponseDto = new Dashboard();
+        EmployeeLocation employeeLocationFromCache = null;
+        System.out.println("I am null " + priorityEmployeeLocations + employeeLocation.getEmpId());
+        if (priorityEmployeeLocations.containsKey(employeeLocation.getEmpId())) {
+            employeeLocationFromCache = priorityEmployeeLocations.get(employeeLocation.getEmpId());
+        }
+        if (employeeLocationFromCache == null) {
+            updateEmployeeLocation(employeeLocation);
+        }
+        dasboardResponseDto.setDedicatedSlots(AppConstantsParkingSlots.dedicatedCount);
+        dasboardResponseDto.setFloaterSlots(AppConstantsParkingSlots.floaterCount);
+        dasboardResponseDto.setLastUpdated(new DateTime().getMillis());
+        dasboardResponseDto.setMyRank(getMyLocationRank(employeeLocation));
+        return dasboardResponseDto;
+    }
 
-	public List<EmployeeLocation> getTopPriorityEmployeeLocation(int size) {
-		List<EmployeeLocation> list = new ArrayList<>();
+    public int getMyLocationRank(EmployeeLocation employeeLocation) {
 
-		if (size >= emList.size()) {
-			return emList;
-		}
+        int key = (int) (employeeLocation.getTimeToReachOffice() / 5);
+        int keynext = key + 5;
+        int countAll = 0;
+        for (int i = 5; i < key * 5; i = i + 5) {
+            countAll += timeBuckets.containsKey(i) ? timeBuckets.get(i).size() : 0;
+        }
+        return countAll += timeBuckets.containsKey(keynext) ? timeBuckets.get(keynext).stream().filter(emp ->
+                emp.getTimeToReachOffice() <= employeeLocation.getTimeToReachOffice()).collect(Collectors.toList()).size() : 0;
 
-		return list;
-	}
+    }
 
-	public List<EmployeeLocation> getEmployeeLocationByCategories(EmpLocationCategoryEnum categoryEnum) {
-		if (map.containsKey(categoryEnum)) {
-			return map.get(categoryEnum);
-		}
-		return new ArrayList<>();
-	}
+
+    public List<EmployeeLocation> getEmployeeLocationByCategories(EmpLocationCategoryEnum categoryEnum) {
+        if (timeBuckets.containsKey(categoryEnum)) {
+            return timeBuckets.get(categoryEnum);
+        }
+        return new ArrayList<>();
+    }
 }
