@@ -52,18 +52,17 @@
         <activity
             android:name=".LiveStatus"
             android:label="@string/title_activity_live_status"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".service.NotificationReceiver">
             <intent-filter>
-                <action android:name="YES_ACTION"/>
-                <action android:name="STOP_ACTION"/>
-
+                <action android:name="YES_ACTION" />
+                <action android:name="STOP_ACTION" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".DashboardActivity"></activity>
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".AdminActivity"></activity>
     </application>
 
 </manifest>

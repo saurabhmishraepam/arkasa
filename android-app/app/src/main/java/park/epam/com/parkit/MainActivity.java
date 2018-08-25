@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), LiveStatus.class);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     startActivity(intent);
                 }
             });
@@ -308,5 +308,10 @@ public class MainActivity extends AppCompatActivity {
         };
         timerObj.schedule(timerTaskObj, 0, 20000);
 
+    }
+
+    public void onClickToAdminActivity(View view){
+        Intent intent = new Intent(this, AdminActivity.class);
+        startActivity(intent);
     }
 }
