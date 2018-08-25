@@ -7,5 +7,31 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="400dp"
-        android:text="Hi, Your Detailed notification view goes here...." />
+        android:text="Are you coming to office By car?" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:layout_width="fill_parent">
+
+        <Button
+
+            android:text="@+id/Button01"
+            android:id="@+id/Button01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+
+        <Button
+
+            android:text="@+id/Button02"
+            android:id="@+id/Button02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+        </Button>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

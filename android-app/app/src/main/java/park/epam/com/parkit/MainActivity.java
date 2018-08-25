@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         timeCreator();
-        EmployeeCached.details.setEmpId("123456");
+       /// EmployeeCached.details.setEmpId("123456");
         if (EmployeeCached.details.getEmpId() != null) {
 
             findViewById(R.id.open_register_button).setVisibility(View.GONE);
@@ -118,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        addNotificationPending("");
+      /*  displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");*/
+
 
     }
 
@@ -155,6 +163,100 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
+
+    private void addNotificationPending(String message) {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.notification)
+                        .setContentTitle("Time To reach Office")
+                        .setContentText(message);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent yesReceive = new Intent();
+        Bundle yesBundle = new Bundle();
+        yesBundle.putInt("userAnswer", 1);//This is the value I want to pass
+        yesReceive.putExtras(yesBundle);
+      //  yesReceive.setAction(CUSTOM_INTENT);
+        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pendingIntentNo = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.addAction(R.drawable.notification, "Yes", pendingIntentYes);
+        builder.addAction(R.drawable.notification, "No", pendingIntentNo);
+
+
+
+        builder.setContentIntent(pendingIntentYes);
+        Log.d("notification", "notify");
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+    }
+
+
+
+
+
+
+   int  numMessages=1;
+    protected void displayNotification(String message) {
+        Log.i("Start", "notification");
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.notification)
+                        .setContentTitle("Time To reach Office")
+                        .setContentText(message);
+
+        mBuilder.setContentTitle("New Message");
+        mBuilder.setContentText("You've received new message.");
+        mBuilder.setTicker("New Message Alert!");
+        mBuilder.setSmallIcon(R.drawable.notification);
+
+        /* Increase notification number every time a new notification arrives */
+        mBuilder.setNumber(++numMessages);
+
+        /* Add Big View Specific Configuration */
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
+        String[] events = new String[6];
+        events[0] = new String("This is first line....");
+        events[1] = new String("This is second line...");
+        events[2] = new String("This is third line...");
+        events[3] = new String("This is 4th line...");
+        events[4] = new String("This is 5th line...");
+        events[5] = new String("This is 6th line...");
+
+        // Sets a title for the Inbox style big view
+        inboxStyle.setBigContentTitle("Big Title Details:");
+
+        // Moves events into the big view
+        for (int i=0; i < events.length; i++) {
+            inboxStyle.addLine(events[i]);
+        }
+
+        mBuilder.setStyle(inboxStyle);
+
+        /* Creates an explicit intent for an Activity in your app */
+        Intent resultIntent = new Intent(this, NotificationView.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(NotificationView.class);
+
+        /* Adds the Intent that starts the Activity to the top of the stack */
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        /* notificationID allows you to update the notification later on. */
+        manager.notify(0, mBuilder.build());
+    }
+
+
+
+
+
 
     @Override
     public void onStart() {
