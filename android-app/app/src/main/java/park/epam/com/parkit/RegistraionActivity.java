@@ -3,32 +3,54 @@ package park.epam.com.parkit;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
+import park.epam.com.parkit.service.HttpService;
 
 public class RegistraionActivity extends AppCompatActivity {
 
+    Map<String,String> map = new HashMap<>();
+    HttpService httpService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraion);
+        httpService = new HttpService();
     }
     public void onClickAddName(View view) {
         // Add a new student record
         ContentValues values = new ContentValues();
+        String emp_name= ((EditText)findViewById(R.id.input_name)).getText().toString();
         values.put(EmplyeeProvider.NAME,
-                ((EditText)findViewById(R.id.input_name)).getText().toString());
+                emp_name);
+        String emp_id = ((EditText)findViewById(R.id.input_eid)).getText().toString();
 
         values.put(EmplyeeProvider.EMPID,
-                ((EditText)findViewById(R.id.input_eid)).getText().toString());
-
+                emp_id);
+        String input_email = ((EditText)findViewById(R.id.input_email)).getText().toString();
+        String input_mobile = ((EditText)findViewById(R.id.input_email)).getText().toString();
         Uri uri = getContentResolver().insert(
                 EmplyeeProvider.CONTENT_URI, values);
+        map.put("empId",emp_id);
+        map.put("empName",emp_name);
+        map.put("email",input_email);
+        map.put("mobileNumber",input_mobile);
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                httpService.callHttpService(map);
+            }
+        });
 
         Toast.makeText(getBaseContext(),
                 uri.toString(), Toast.LENGTH_LONG).show();
