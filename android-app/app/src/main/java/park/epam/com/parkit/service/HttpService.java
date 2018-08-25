@@ -27,25 +27,28 @@ public class HttpService {
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(20000);
             ObjectMapper mapper = new ObjectMapper();
-
+   // String s = "{ \"empId\":\"1234444\", \"lat\":120.0, \"lang\":0.0, \"lastUpdated\":122222, \"updateCount\":2, \"isMovingToOffice\":false, \"timeToReachOffice\":123, \"currentDistanceInKms\":105, \"isComing\":false}";
+           // String s =  "{\"empId\":\"1234444\",\"lastUpdated\":1535238852284,\"currentDistanceInKms\":14641,\"timeToReachOffice\":1608,\"id\":null,\"isMovingToOffice\":false,\"lang\":78.38135895266606,\"lat\":17.433074309217027}";
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
             wr.writeBytes(mapper.writeValueAsString(params));
             wr.flush();
             wr.close();
             int responsecode = conn.getResponseCode();
             Log.d("Data pushed:", "responsecode:" + responsecode);
+            if(responsecode == 200) {
+                DataInputStream dataInputStream = new DataInputStream(conn.getInputStream());
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
 
-            DataInputStream dataInputStream = new DataInputStream(conn.getInputStream());
-            StringBuffer sb = new StringBuffer("");
-            String line="";
+                while ((line = dataInputStream.readLine()) != null) {
 
-            while((line = dataInputStream.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
 
-                sb.append(line);
-                break;
+                String response = sb.toString();
+                Log.d("Response message :", response);
             }
-            String response = sb.toString();
-            Log.d("Response message :",response);
             return responsecode;
         } catch (IOException e) {
             e.printStackTrace();
