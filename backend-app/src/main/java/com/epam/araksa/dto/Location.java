@@ -3,21 +3,21 @@ package com.epam.araksa.dto;
 import java.io.Serializable;
 
 public class Location implements Serializable {
-    private float lat, lng;
+    private double lat, lng;
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(float lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public float getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(float lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -28,16 +28,10 @@ public class Location implements Serializable {
 
         Location location = (Location) o;
 
-        if (Float.compare(location.lat, lat) != 0) return false;
-        return Float.compare(location.lng, lng) == 0;
+        if (Double.compare(location.lat, lat) != 0) return false;
+        return Double.compare(location.lng, lng) == 0;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (lat != +0.0f ? Float.floatToIntBits(lat) : 0);
-        result = 31 * result + (lng != +0.0f ? Float.floatToIntBits(lng) : 0);
-        return result;
-    }
 
     @Override
     public String toString() {
