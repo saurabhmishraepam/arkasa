@@ -23,4 +23,9 @@ public class RegistrationController {
 	@DeleteMapping( value="/emp/delete/{ID}")
 	public void deleteEmpByID(@PathVariable String ID){employeeService.deleteUser(ID);
 	}
+	
+	@GetMapping("/emp/dummyUser")
+	public String getDummyUser() {
+		return "Dummy data";
+	}
 }
