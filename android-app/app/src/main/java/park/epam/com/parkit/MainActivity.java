@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-     /*   gps = new GPSTracker(MainActivity.this);
+        gps = new GPSTracker(MainActivity.this);
         // check if GPS enabled
         if (gps.canGetLocation()) {
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             gps.showSettingsAlert();
         }
-*/
+
         timeCreator();
         EmployeeCached.details.setEmpId("123456");
         if (EmployeeCached.details.getEmpId() != null) {

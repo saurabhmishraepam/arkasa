@@ -17,9 +17,7 @@ import java.util.Map;
 
 import park.epam.com.parkit.Employee;
 
-/**
- * Created by saurabh on 4/8/18.
- */
+
 
 public class EmplyeeProvider  extends ContentProvider{
     static final String PROVIDER_NAME="park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider";
@@ -75,25 +73,15 @@ public class EmplyeeProvider  extends ContentProvider{
         Context context = getContext();
         DatabaseHelper dbHelper = new DatabaseHelper(context);
 
-        /**
-         * Create a write able database which will trigger its
-         * creation if it doesn't already exist.
-         */
-
         db = dbHelper.getWritableDatabase();
         return (db == null)? false:true;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        /**
-         * Add a new student record
-         */
+
         long rowID = db.insert(	EMPLOYEES_TABLE_NAME, "", values);
 
-        /**
-         * If record is added successfully
-         */
         if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
             getContext().getContentResolver().notifyChange(_uri, null);
