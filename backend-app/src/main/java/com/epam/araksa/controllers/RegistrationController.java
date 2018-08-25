@@ -10,7 +10,6 @@ import com.epam.araksa.service.EmployeeService;
 @RestController
 public class RegistrationController {
 
-
 	@Autowired
 	EmployeeService employeeService;
 
@@ -21,7 +20,6 @@ public class RegistrationController {
 	@DeleteMapping( value="/emp/delete/empId/{empId}")
 	public void deleteEmpByEmpID(@PathVariable String empId){employeeService.deleteUserByEmpId(empId);
 	}
-
 	@DeleteMapping( value="/emp/delete/{ID}")
 	public void deleteEmpByID(@PathVariable String ID){employeeService.deleteUser(ID);
 	}
