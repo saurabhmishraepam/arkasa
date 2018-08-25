@@ -4,46 +4,42 @@
 package com.epam.araksa.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
+import org.springframework.stereotype.Service;
 
 import com.epam.araksa.dto.EmpLocationCategoryEnum;
 import com.epam.araksa.dto.EmployeeLocation;
-import com.google.common.collect.MinMaxPriorityQueue;
 
 /**
  * @author Rakesh_Gupta
  *
  */
+@Service
 public class EmpLocationPool {
 
 	List<EmployeeLocation> emList;
-	MinMaxPriorityQueue<EmployeeLocation> priorityEmployeeLocations;
-	private static int MAX_EMP_SIZE;
+	Map<String, EmployeeLocation> priorityEmployeeLocations;
+	private static int MAX_EMP_POOL_SIZE;
 	private Map<EmpLocationCategoryEnum, List<EmployeeLocation>> map;
 
 	public EmpLocationPool(List<EmployeeLocation> emList) {
 		this();
 		this.emList = emList;
-		priorityEmployeeLocations.addAll(this.emList);
-		map = new HashMap<>();
-		for (EmpLocationCategoryEnum eCategoryEnum : EmpLocationCategoryEnum.values()) {
-			map.put(eCategoryEnum, new ArrayList<EmployeeLocation>());
-		}
 		prepareEmployeeLocationsBuckets(this.emList);
 	}
 
 	public EmpLocationPool() {
-		MAX_EMP_SIZE = 1000;
-		this.priorityEmployeeLocations = MinMaxPriorityQueue.orderedBy(new EmpLocationComparator())
-				.maximumSize(MAX_EMP_SIZE).create();
+
+		priorityEmployeeLocations = new TreeMap<>();
 	}
 
-	public Boolean updateEmployeeLocation(EmployeeLocation employeeLocation) {
+	public void updateEmployeeLocation(EmployeeLocation employeeLocation) {
 		updateEmployeeLocationPool(employeeLocation);
 		prepareEmployeeLocationsBucket(employeeLocation);
-		return emList.add(employeeLocation);
+
 	}
 
 	private void prepareEmployeeLocationsBuckets(List<EmployeeLocation> emList) {
@@ -74,9 +70,7 @@ public class EmpLocationPool {
 	}
 
 	private void updateEmployeeLocationPool(EmployeeLocation employeeLocation) {
-		if (priorityEmployeeLocations.contains(employeeLocation)) {
-			priorityEmployeeLocations.add(employeeLocation);
-		}
+		priorityEmployeeLocations.put(employeeLocation.getEmpId(), employeeLocation);
 	}
 
 	public List<EmployeeLocation> getTopPriorityEmployeeLocation(int size) {
@@ -86,12 +80,6 @@ public class EmpLocationPool {
 			return emList;
 		}
 
-		for (int i = 0; i < size; i++) {
-			EmployeeLocation empLoc = this.priorityEmployeeLocations.pollFirst();
-			list.add(empLoc);
-		}
-
-		this.priorityEmployeeLocations.addAll(list);
 		return list;
 	}
 
