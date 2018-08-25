@@ -2,6 +2,7 @@ package com.epam.araksa.DummyEmployeePrep;
 
 import com.epam.araksa.dto.ClassifiedWorkingDays;
 import com.epam.araksa.dto.LogTime;
+import com.epam.araksa.dto.Season;
 import com.epam.araksa.service.HolidayCheckService;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -58,6 +59,27 @@ public class EmployeeDailyTimingPrep {
                     tm.setcWD(ClassifiedWorkingDays.AW);
                 if (startDay.getDayOfWeek() == DateTimeConstants.SATURDAY)
                     tm.setcWD(ClassifiedWorkingDays.BW);
+
+                if(startDay.getMonthOfYear()==DateTimeConstants.DECEMBER   ||
+                        startDay.getMonthOfYear()==DateTimeConstants.NOVEMBER
+                        ||
+                        startDay.getMonthOfYear()==DateTimeConstants.OCTOBER
+                        ||
+                        startDay.getMonthOfYear()==DateTimeConstants.JANUARY
+                        ){
+
+                    tm.setSeason(Season.WINTER);
+                }else if(startDay.getMonthOfYear()==DateTimeConstants.FEBRUARY ||
+
+                        startDay.getMonthOfYear()==DateTimeConstants.MARCH
+                        ||startDay.getMonthOfYear()==DateTimeConstants.APRIL
+                        || startDay.getMonthOfYear()==DateTimeConstants.MAY ||
+                        startDay.getMonthOfYear()==DateTimeConstants.JUNE){
+                    tm.setSeason(Season.SUMMER);
+
+                }else{
+                    tm.setSeason(Season.RAINY);
+                }
 
                 logs.add(tm);
             }

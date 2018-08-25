@@ -7,6 +7,8 @@ public class EmployeeCached {
     public static EmployeeDetails details=new EmployeeDetails();
     public static boolean isComingToOffice = false;
 
+    public static boolean isComingToOffice=false;
+
     public String getEmployeeId(){
         EmployeeDetails employeeDetails = new EmployeeDetails();
         employeeDetails.setEmpId("1234");

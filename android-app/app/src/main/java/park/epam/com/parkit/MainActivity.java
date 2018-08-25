@@ -28,6 +28,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         Log.d("oncrear", "created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,27 +81,47 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        gps = new GPSTracker(MainActivity.this);
-//        // check if GPS enabled
-//        if (gps.canGetLocation()) {
-//
-//            double latitude = gps.getLatitude();
-//            double longitude = gps.getLongitude();
-//            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
-//            addNotification(gps.distanceAll);
-//        } else {
-//            gps.showSettingsAlert();
-//        }
-//        LocationRequestDto locationRequestDto = gps.locationRequestDto;
-       // timeCreator();
-//       AsyncTask.execute(new Runnable() {
-//           @Override
-//            public void run() {
-//                timeCreator();
-//                Log.d("Response Code :", "testing");
-//
-//            }
-//        });
+       gps = new GPSTracker(MainActivity.this);
+     // check if GPS enabled
+       if (gps.canGetLocation()) {
+         double latitude = gps.getLatitude();
+          double longitude = gps.getLongitude();
+           //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+          addNotification(gps.distanceAll);
+
+
+
+      } else {
+          gps.showSettingsAlert();
+       }
+
+
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                LocationRequestDto locationRequestDto = gps.locationRequestDto;
+
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                Map<String,Object> map = new HashMap<>();
+                map.put("empId",locationRequestDto.getEmpId());
+                map.put("id",locationRequestDto.getId());
+
+                map.put("lastUpdated",new DateTime().getMillis()+"");
+                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
+                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
+                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
+                map.put("lat",locationRequestDto.getLat()+"");
+                map.put("lang",locationRequestDto.getLang()+"");
+                httpService=new HttpService();
+                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                Log.d("Response Code :", response.toString());
+
+            }
+        });
+
 
         //EmployeeCached.details.setEmpId("123456");
 
@@ -195,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
 
     }
 
