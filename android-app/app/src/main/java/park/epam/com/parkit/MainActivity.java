@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.joda.time.DateTime;
@@ -100,21 +101,30 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+                EmployeeCached cached = new EmployeeCached();
                 LocationRequestDto locationRequestDto = gps.locationRequestDto;
 
 
                 ObjectMapper mapper = new ObjectMapper();
 
                 Map<String,Object> map = new HashMap<>();
-                map.put("empId",locationRequestDto.getEmpId());
+                String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                map.put("empId",empId);
                 map.put("id",locationRequestDto.getId());
 
-                map.put("lastUpdated",new DateTime().getMillis()+"");
-                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
-                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
-                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
-                map.put("lat",locationRequestDto.getLat()+"");
-                map.put("lang",locationRequestDto.getLang()+"");
+                map.put("lastUpdated",new DateTime().getMillis());
+                map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                map.put("lat",locationRequestDto.getLat());
+                map.put("lang",locationRequestDto.getLang());
+                ObjectMapper mapper1 = new ObjectMapper();
+                try {
+                   String s =  mapper1.writeValueAsString(map);
+                    System.out.println("s ="+s);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 httpService=new HttpService();
                 Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                 Log.d("Response Code :", response.toString());
@@ -166,15 +176,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        Button notify = (Button) findViewById(R.id.notify);
-
-        notify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                addNotificationPending("Are you coming to office or not");
-            }
-        });
+//        Button notify = (Button) findViewById(R.id.notify);
+//
+//        notify.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                addNotificationPending("Are you coming to office or not");
+//            }
+//        });
 
 
         addNotificationPending("First notification");
