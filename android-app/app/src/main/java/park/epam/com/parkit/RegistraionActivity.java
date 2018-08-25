@@ -6,19 +6,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
 
 public class RegistraionActivity extends AppCompatActivity {
+    private static final String[] PARKING_TYPES = new String[] {
+            "Dedicated","Floaters"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registraion);
+        Spinner parkingTypeDropdown = findViewById(R.id.input_paring_type);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, PARKING_TYPES);
+        parkingTypeDropdown.setAdapter(adapter);
     }
-    public void onClickAddName(View view) {
+    public void onClickAddName(View view) {git
         // Add a new student record
         ContentValues values = new ContentValues();
         values.put(EmplyeeProvider.NAME,
