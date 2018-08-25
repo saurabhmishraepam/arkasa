@@ -111,13 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
                 map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
                 map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
-                String json ="";
-                try {
-                  json = mapper.writeValueAsString(locationRequestDto.getCurrent());
-                }catch(Exception ex){
-
-                }
-                map.put("current",json);
+                map.put("lat",locationRequestDto.getLat()+"");
+                map.put("lang",locationRequestDto.getLang()+"");
                 httpService=new HttpService();
                 Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                 Log.d("Response Code :", response.toString());

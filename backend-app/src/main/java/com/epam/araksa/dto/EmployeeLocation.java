@@ -4,20 +4,46 @@ public class EmployeeLocation {
 
 	private String id;
 	private String empId;
-	private Location current;
+	private double lat;
+	private double lang;
 	private long lastUpdated;
 	private int updateCount;
 	private Boolean isMovingToOffice;
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLang() {
+		return lang;
+	}
+
+	public void setLang(double lang) {
+		this.lang = lang;
+	}
+
 	private long timeToReachOffice;
 	private long currentDistanceInKms;
 	private boolean isComing;
 
 	@Override
 	public String toString() {
-		return "EmployeeLocation{" + "id='" + id + '\'' + ", empId='" + empId + '\'' + ", current=" + current
-				+ ", lastUpdated=" + lastUpdated + ", updateCount=" + updateCount + ", isMovingToOffice="
-				+ isMovingToOffice + ", timeToReachOffice=" + timeToReachOffice + ", currentDistanceInKms="
-				+ currentDistanceInKms + ", isComing=" + isComing + '}';
+		return "EmployeeLocation{" +
+				"id='" + id + '\'' +
+				", empId='" + empId + '\'' +
+				", lat=" + lat +
+				", lang=" + lang +
+				", lastUpdated=" + lastUpdated +
+				", updateCount=" + updateCount +
+				", isMovingToOffice=" + isMovingToOffice +
+				", timeToReachOffice=" + timeToReachOffice +
+				", currentDistanceInKms=" + currentDistanceInKms +
+				", isComing=" + isComing +
+				'}';
 	}
 
 	public boolean isComing() {
@@ -52,13 +78,6 @@ public class EmployeeLocation {
 		this.currentDistanceInKms = distanceCurrentInKms;
 	}
 
-	public Location getCurrent() {
-		return current;
-	}
-
-	public void setCurrent(Location current) {
-		this.current = current;
-	}
 
 	public long getLastUpdated() {
 		return lastUpdated;
