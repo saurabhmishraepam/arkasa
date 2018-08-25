@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ParkIt</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="directionsApiKey">AIzaSyBsAhXRBCTOu_lY7r8Z4NQ7RwW2HYAU4LA</string>
+    <string name="title_activity_registraion">RegistraionActivity</string>
+    <string name="channel_name">epamPark</string>
+    <string name="channel_description">RegistraionActivity</string>
+    <string name="title_activity_live_status">LiveStatus</string>
+
+</resources>
