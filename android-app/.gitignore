@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -23,3 +24,16 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+=======
+*.iml
+.gradle
+.idea
+/local.properties
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+>>>>>>> a70f1fe90232cd97b50c0b1f3151f5f0165062de

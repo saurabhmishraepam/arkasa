@@ -16,6 +16,7 @@ public class Employee {
 	private String projectTag;
 	private JobFunction jFun;
 	private String department;
+	private String email;
 
 	public JobFunction getjFun() {
 		return jFun;
@@ -106,11 +107,19 @@ public class Employee {
 		this.dateRegistered = dateRegistered;
 	}
 
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Employee [");
-		builder.append(" empId=");
+		builder.append("Employee [empId=");
 		builder.append(empId);
 		builder.append(", empName=");
 		builder.append(empName);
@@ -122,6 +131,16 @@ public class Employee {
 		builder.append(isActive);
 		builder.append(", dateRegistered=");
 		builder.append(dateRegistered);
+		builder.append(", jobLevel=");
+		builder.append(jobLevel);
+		builder.append(", projectTag=");
+		builder.append(projectTag);
+		builder.append(", jFun=");
+		builder.append(jFun);
+		builder.append(", department=");
+		builder.append(department);
+		builder.append(", email=");
+		builder.append(email);
 		builder.append("]");
 		return builder.toString();
 	}
