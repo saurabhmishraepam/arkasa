@@ -25,21 +25,24 @@ public class EmployeeDailyTimingPrep {
         for (; !(startDay.dayOfMonth().get() == current.dayOfMonth().get() &&
                 startDay.monthOfYear().get() == current.monthOfYear().get());
              startDay = startDay.plusDays(1)) {
-
+            System.out.println("Inside");
             HolidayCheckService checkService=new HolidayCheckService();
-            if(checkService.isHoliday()){
+         /*   if(checkService.isHoliday()){
+                System.out.println("Inside holiday");
                 continue;
-            }
+            }*/
             if (startDay.getDayOfWeek() == DateTimeConstants.SATURDAY ||
                     startDay.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+                System.out.println("Inside holiday1");
                 continue;
             }
+            System.out.println("Inside--1");
             for (String st : emps) {
                 float distance = distanceInKms.containsKey(st) ? distanceInKms.get(st) : rnd.nextInt(40);
-                int randTimeVarianceInMinutes = rnd.nextInt(5);
-
-                randTimeVarianceInMinutes += 5 * 60;
-
+                int randTimeVarianceInMinutes = rnd.nextInt(20);
+                System.out.println("----"+distance+"  randTimeVarianceInMinutes "+randTimeVarianceInMinutes);
+                randTimeVarianceInMinutes=(int)(distance*((float)(randTimeVarianceInMinutes/2.0f)));
+                randTimeVarianceInMinutes*=10;
                 int inTimeMin = rnd.nextInt(60);
 
                 int inTimeHr = rnd.nextInt(13);
@@ -57,9 +60,12 @@ public class EmployeeDailyTimingPrep {
                 tm.setDay(startDay.getMillis());
                 if (startDay.getDayOfWeek() == DateTimeConstants.MONDAY)
                     tm.setcWD(ClassifiedWorkingDays.AW);
-                if (startDay.getDayOfWeek() == DateTimeConstants.SATURDAY)
+                if (startDay.getDayOfWeek() == DateTimeConstants.FRIDAY)
                     tm.setcWD(ClassifiedWorkingDays.BW);
+                else{
 
+                    System.out.println("-----------"+startDay.getDayOfWeek()+" "+DateTimeConstants.SATURDAY);
+                }
                 if(startDay.getMonthOfYear()==DateTimeConstants.DECEMBER   ||
                         startDay.getMonthOfYear()==DateTimeConstants.NOVEMBER
                         ||
@@ -80,7 +86,7 @@ public class EmployeeDailyTimingPrep {
                 }else{
                     tm.setSeason(Season.RAINY);
                 }
-
+                System.out.println("Inside--1333"+tm);
                 logs.add(tm);
             }
         }
