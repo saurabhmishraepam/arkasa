@@ -8,6 +8,7 @@ public class DashboardDto {
     private int occupiedSlots;
     private int myRank;
     private long lastUpdated;
+    private int onTheWay;
 
     public int getDedicatedSlots() {
         return dedicatedSlots;
@@ -61,6 +62,14 @@ public class DashboardDto {
         return floatersAvailable;
     }
 
+    public int getOnTheWay() {
+        return onTheWay;
+    }
+
+    public void setOnTheWay(int onTheWay) {
+        this.onTheWay = onTheWay;
+    }
+
     public void setFloatersAvailable(int floatersAvailable) {
         this.floatersAvailable = floatersAvailable;
     }
@@ -75,6 +84,7 @@ public class DashboardDto {
                 ", occupiedSlots=" + occupiedSlots +
                 ", myRank=" + myRank +
                 ", lastUpdated=" + lastUpdated +
+                ", onTheWay=" + onTheWay +
                 '}';
     }
 }
