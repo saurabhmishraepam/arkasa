@@ -57,9 +57,11 @@ public class DashboardActivity extends AppCompatActivity {
                 TextView available = (TextView) findViewById(R.id.available_slots);
                 available.setText(String.valueOf(dashboardDto.getFloatersAvailable()));
                 TextView occupied = (TextView) findViewById(R.id.occupied_slots);
-                occupied.setText(String.valueOf(dashboardDto.getFloatersAvailable() - dashboardDto.getOccupiedSlots()));
+                occupied.setText(String.valueOf(dashboardDto.getOccupiedSlots()));
                 TextView onthewayUsers = (TextView) findViewById(R.id.ontheway_users);
-                onthewayUsers.setText(String.valueOf(dashboardDto.getFloatersAvailable()));
+                onthewayUsers.setText(String.valueOf(dashboardDto.getOnTheWay()));
+                TextView rank = (TextView) findViewById(R.id.rank);
+                rank.setText(String.valueOf(dashboardDto.getMyRank()));
 
             }
         }catch (Exception e){
