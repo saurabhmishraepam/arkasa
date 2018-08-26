@@ -37,10 +37,6 @@ public class AdminActivity extends AppCompatActivity {
 
     }
     private void loadParkedCar(){
-        hmap.put(12344, new Timestamp(System.currentTimeMillis()).toString());
-        hmap.put(54666, new Timestamp(System.currentTimeMillis()).toString());
-        hmap.put(21987, new Timestamp(System.currentTimeMillis()).toString());
-        hmap.put(12962, new Timestamp(System.currentTimeMillis()).toString());
         this.addValueInTable(hmap);
     }
     private void addValueInTable(HashMap<Integer, String> data) {
