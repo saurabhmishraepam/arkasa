@@ -17,7 +17,7 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
-    <color name="backgroundcolor">#3F51B5</color>
+    <color name="backgroundcolor">#FAFAFA</color>
     <color name="lightgray">#ededed</color>
     <color name="deeppurple">#7c4dff</color>
     <color name="yello">#ffb300</color>
@@ -25,6 +25,14 @@
     <color name="darkblue">#23283a</color>
     <color name="testcolorblue">#152b38</color>
     <color name="pink">#fe104d</color>
+    <color name="bgreen">#dff0d8</color>
+    <color name="bfgreen">#3c763d</color>
+    <color name="bred">#f2dede</color>
+    <color name="bfred">#a94442</color>
+    <color name="bamber">#fcf8e3</color>
+    <color name="bfamber">#8a6d3b</color>
+    <color name="bfblue">#bce8f1</color>
+
 
     <color name="black_overlay">#66000000</color>
 </resources>
