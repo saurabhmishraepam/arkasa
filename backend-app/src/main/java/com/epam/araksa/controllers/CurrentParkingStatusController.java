@@ -22,7 +22,8 @@ public class CurrentParkingStatusController {
         Dashboard dashboard= relativeLocationCache.getLocationCache(employeeLocation);
         dashboard.setFloatersAvailable(
         dashboard.getFloaterSlots()- ParkingBookedCache.booked.size());
-        return dashboard;
+        dashboard.setOccupiedSlots(ParkingBookedCache.booked.size());
+       return dashboard;
     }
 
 

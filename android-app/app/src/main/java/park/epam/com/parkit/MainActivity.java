@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
        }
 
 
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        EmployeeCached.details.setEmpId("123456");
+      // EmployeeCached.details.setEmpId("123456");
 
         if (EmployeeCached.details.getEmpId() != null) {
 
@@ -158,9 +159,47 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    EmployeeCached cached = new EmployeeCached();
+                    LocationRequestDto locationRequestDto = gps.locationRequestDto;
+                    ObjectMapper mapper = new ObjectMapper();
+
+                    Map<String,Object> map = new HashMap<>();
+                    if(locationRequestDto!=null){
+
+                        String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                        map.put("empId",empId);
+                        map.put("id",locationRequestDto.getId());
+
+                        map.put("lastUpdated",new DateTime().getMillis());
+                        map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                        map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                        map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                        map.put("lat",locationRequestDto.getLat());
+                        map.put("lang",locationRequestDto.getLang());
+
+                    }
+                    ObjectMapper mapper1 = new ObjectMapper();
+                    try {
+                        String s =  mapper1.writeValueAsString(map);
+                        System.out.println("s ="+s);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    httpService=new HttpService();
+                    Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                    Log.d("Response Code :", response.toString());
+
+                }
+            });
+
+
+
         } else {
 
-
+            findViewById(R.id.live_status).setVisibility(View.GONE);
             btnRegister = (Button) findViewById(R.id.open_register_button);
 
             btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        addNotificationPending("First notification");
+        addNotificationPending("Araksa wants to know, are you coming to office?");
       /*  displayNotification("");
         displayNotification("");
         displayNotification("");
@@ -301,8 +340,8 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setSmallIcon(R.drawable.notification)
-                        .setContentTitle("Time To reach Office")
-                        .setContentText(message);
+                        .setContentTitle(message)
+                        .setContentText("");
 
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -314,14 +353,15 @@ public class MainActivity extends AppCompatActivity {
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+
     }
 
     private void addNotificationPending(String message) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setSmallIcon(R.drawable.notification)
-                        .setContentTitle("Time To reach Office")
-                        .setContentText(message);
+                        .setContentTitle(message)
+                        .setContentText("");
 
         Intent resultIntent = new Intent(this, NotificationView.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);

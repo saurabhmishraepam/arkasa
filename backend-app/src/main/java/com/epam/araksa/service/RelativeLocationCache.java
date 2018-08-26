@@ -6,6 +6,7 @@ import com.epam.araksa.dto.Dashboard;
 import com.epam.araksa.dto.EmployeeLocation;
 import com.epam.araksa.dto.PredictedTime;
 import com.epam.araksa.repository.PredictedTimesEmp;
+import com.mongodb.BasicDBObject;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,10 @@ public class RelativeLocationCache {
         DateTime dt=new DateTime();
         String month=dt.getMonthOfYear()<10?"0"+dt.getMonthOfYear():dt.getMonthOfYear()+"";
         String dateToday=dt.getYear()+"-"+month+"-"+dt.getDayOfMonth();
-       // System.out.println("---"+predictedTimesEmp.findByforDate(dateToday));
-       // predictedTimesEmp.findByforDate(dateToday);
+        BasicDBObject query = new BasicDBObject();
+
+        //System.out.println("---"+predictedTimesEmp.findByforDate(dateToday));
+        //predictedTimesEmp.findByforDate(dateToday);
        return empLocationPool.getEmployeeFromCache(employeeLocation);
     }
 

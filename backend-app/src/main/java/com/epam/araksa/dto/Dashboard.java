@@ -26,6 +26,16 @@ public class Dashboard {
 	private int myRank;
 	private long lastUpdated;
 
+	public int getOnTheWay() {
+		return onTheWay;
+	}
+
+	public void setOnTheWay(int onTheWay) {
+		this.onTheWay = onTheWay;
+	}
+
+	private int onTheWay;
+
 	public int getDedicatedSlots() {
 		return dedicatedSlots;
 	}
