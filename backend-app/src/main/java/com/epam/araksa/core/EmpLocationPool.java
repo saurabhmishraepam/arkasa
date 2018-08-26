@@ -65,6 +65,7 @@ public class EmpLocationPool {
         dasboardResponseDto.setFloaterSlots(AppConstantsParkingSlots.floaterCount);
         dasboardResponseDto.setLastUpdated(new DateTime().getMillis());
         dasboardResponseDto.setMyRank(getMyLocationRank(employeeLocation));
+        dasboardResponseDto.setOnTheWay(priorityEmployeeLocations.size());
         return dasboardResponseDto;
     }
 
