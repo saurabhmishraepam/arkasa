@@ -76,9 +76,9 @@ public class EmpLocationPool {
         for (int i = 5; i < key * 5; i = i + 5) {
             countAll += timeBuckets.containsKey(i) ? timeBuckets.get(i).size() : 0;
         }
-        return countAll += timeBuckets.containsKey(keynext) ? timeBuckets.get(keynext).stream().filter(emp ->
+        countAll += timeBuckets.containsKey(keynext) ? timeBuckets.get(keynext).stream().filter(emp ->
                 emp.getTimeToReachOffice() <= employeeLocation.getTimeToReachOffice()).collect(Collectors.toList()).size() : 0;
-
+        return countAll==0?1:countAll;
     }
 
 
