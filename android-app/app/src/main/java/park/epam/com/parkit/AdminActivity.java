@@ -37,6 +37,8 @@ public class AdminActivity extends AppCompatActivity {
 
     }
     private void loadParkedCar(){
+
+
         this.addValueInTable(hmap);
     }
     private void addValueInTable(HashMap<Integer, String> data) {

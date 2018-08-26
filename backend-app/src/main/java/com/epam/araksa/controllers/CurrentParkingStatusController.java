@@ -23,6 +23,8 @@ public class CurrentParkingStatusController {
         dashboard.setFloatersAvailable(
         dashboard.getFloaterSlots()- ParkingBookedCache.booked.size());
         dashboard.setOccupiedSlots(ParkingBookedCache.booked.size());
+        System.out.println("after adding new location details:: "+employeeLocation);
+
        return dashboard;
     }
 

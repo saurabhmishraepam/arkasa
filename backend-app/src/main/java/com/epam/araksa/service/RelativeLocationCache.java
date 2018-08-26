@@ -27,14 +27,7 @@ public class RelativeLocationCache {
     }
 
     public Dashboard getLocationCache(EmployeeLocation employeeLocation){
-        System.out.println(empLocationPool);
-        DateTime dt=new DateTime();
-        String month=dt.getMonthOfYear()<10?"0"+dt.getMonthOfYear():dt.getMonthOfYear()+"";
-        String dateToday=dt.getYear()+"-"+month+"-"+dt.getDayOfMonth();
-        BasicDBObject query = new BasicDBObject();
 
-        //System.out.println("---"+predictedTimesEmp.findByforDate(dateToday));
-        //predictedTimesEmp.findByforDate(dateToday);
        return empLocationPool.getEmployeeFromCache(employeeLocation);
     }
 
