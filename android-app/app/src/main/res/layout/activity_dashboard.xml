@@ -105,8 +105,9 @@
 
                         android:src="@drawable/available" />
 
+
                     <TextView
-                        android:id = "@+id/available_slots"
+                        android:id = "@+id/available_slots_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -115,11 +116,12 @@
                         android:textSize="30dp" />
 
                     <TextView
+                        android:id = "@+id/available_slots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="10dp"
-                        android:text="10 "
+                        android:text="10"
                         android:textSize="30dp" />
 
                 </LinearLayout>
@@ -147,6 +149,7 @@
                         android:textSize="30dp" />
 
                     <TextView
+                        android:id = "@+id/occupied_slots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -175,6 +178,7 @@
                         android:textSize="30dp" />
 
                     <TextView
+                        android:id = "@+id/ontheway_users"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"

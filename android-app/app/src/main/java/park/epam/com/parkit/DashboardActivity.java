@@ -42,8 +42,32 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             gps.showSettingsAlert();
         }
+       String responseData = getIntent().getExtras().getString("liveData");
+        Log.d("Dashboard data ",responseData);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+             dashboardDto =   mapper.readValue(responseData,DashboardDto.class);
 
-        callLiveStatusService();
+            Log.d("dto",dashboardDto.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (dashboardDto != null) {
+                TextView available = (TextView) findViewById(R.id.available_slots);
+                available.setText(String.valueOf(dashboardDto.getFloatersAvailable()));
+                TextView occupied = (TextView) findViewById(R.id.occupied_slots);
+                occupied.setText(String.valueOf(dashboardDto.getFloatersAvailable() - dashboardDto.getOccupiedSlots()));
+                TextView onthewayUsers = (TextView) findViewById(R.id.ontheway_users);
+                onthewayUsers.setText(String.valueOf(dashboardDto.getFloatersAvailable()));
+
+            }
+        }catch (Exception e){
+            Log.e("excepton :",e.getMessage());
+        }
+
+
+        //callLiveStatusService();
 
 
 
@@ -81,15 +105,25 @@ public class DashboardActivity extends AppCompatActivity {
                     Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                     dashboardDto = mapper1.readValue(response.toString(), DashboardDto.class);
                     Log.d("Response Code :", response.toString());
-                    System.out.print("dashboardDto"+dashboardDto);
-                    TextView available = (TextView) findViewById (R.id.available_slots);
-                    available.setText(dashboardDto.getAvailableSlots());
+                   Log.d("dashboardDto", dashboardDto.toString());
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        });
 
+            }
+        }
+        );
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(dashboardDto != null) {
+            Log.d("not null","");
+            TextView available = (TextView) findViewById(R.id.available_slots);
+            available.setText(dashboardDto.getFloatersAvailable());
+        }
     }
 
 }

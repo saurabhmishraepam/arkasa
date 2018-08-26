@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     HttpService httpService;
     DashBoardService dashBoardService;
     DashboardDto dashboardDto = null;
+    String liveResponse = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,12 +126,15 @@ public class MainActivity extends AppCompatActivity {
                 try {
                    String s =  mapper1.writeValueAsString(map);
                     System.out.println("s ="+s);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
+
                 httpService=new HttpService();
                 Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                liveResponse = response.toString();
+                dashboardDto =  mapper1.readValue(response.toString(),DashboardDto.class);
                 Log.d("Response Code :", response.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -149,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    intent.putExtra("liveData",liveResponse);
                     startActivity(intent);
                 }
             });
