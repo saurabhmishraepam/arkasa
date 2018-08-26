@@ -79,7 +79,8 @@ public class NotificationView extends Activity {
                 finish();
             }
         });
-
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancelAll();
 
 //
     }

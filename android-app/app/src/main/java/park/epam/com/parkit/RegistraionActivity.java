@@ -1,6 +1,7 @@
 package park.epam.com.parkit;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -72,6 +73,12 @@ public class RegistraionActivity extends AppCompatActivity {
         EmployeeCached.details.setActive(true);
         Toast.makeText(getBaseContext(),
                 "Registration Successful..", Toast.LENGTH_LONG).show();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception ex){
+        }
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
     public void onClickRetrieveEmployee(View view) {
         // Retrieve student records

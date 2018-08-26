@@ -2,25 +2,47 @@
 <LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     android:layout_width = "fill_parent"
     android:layout_height = "fill_parent"
-    android:orientation = "vertical" >
+    android:orientation = "vertical"
+    android:background="@color/backgroundcolor">
 
     <Button
         android:id = "@+id/open_register_button"
         android:layout_width = "fill_parent"
         android:layout_height = "wrap_content"
+        android:layout_marginTop="140dp"
         android:text = "Register New User"/>
 
     <Button
         android:id = "@+id/live_status"
         android:layout_width = "fill_parent"
         android:layout_height = "wrap_content"
+        android:layout_marginTop="140dp"
         android:text = "LIVE Status"/>
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:text="Admin"
         android:onClick="onClickToAdminActivity"/>
+
+
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="118dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="40dp"
+    android:text="Live Status of Parking at EPAM Office!!! "
+    android:textColor="@color/white"
+    android:textSize="30dp" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="118dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Google Traffic Status Based Relative Location"
+        android:textColor="@color/colorAccent"
+        android:textSize="11dp" />
 
 </LinearLayout>
