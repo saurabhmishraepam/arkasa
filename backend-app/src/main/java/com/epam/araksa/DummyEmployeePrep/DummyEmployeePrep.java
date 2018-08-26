@@ -58,6 +58,7 @@ public class DummyEmployeePrep {
             emp.setjFun(JobFunction.values()[rnd.nextInt(JobFunction.values().length)]);
             listEmp.add(emp);
         }
+        System.out.println(listEmp);
         return listEmp;
     }
 
