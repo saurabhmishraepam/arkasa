@@ -10,7 +10,7 @@
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#33A7FF"
+    android:background="@color/backgroundcolor"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -86,7 +86,7 @@
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="319dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -97,51 +97,60 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
+                    android:background="@color/bgreen"
+
                     android:orientation="horizontal">
 
-                    <ImageView
+                   <!-- <ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
 
                         android:src="@drawable/available" />
-
+-->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
                         android:text="Available "
+                        android:textColor="@color/bfgreen"
                         android:textSize="30dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/bfgreen"
                         android:text="10 "
                         android:textSize="30dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="330dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:background="@color/bred"
                     android:paddingTop="5dp">
 
-                    <ImageView
+                    <!--ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
 
-                        android:src="@drawable/occupied" />
+                        android:src="@drawable/occupied" /-->
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/bfred"
                         android:text="Occupied "
                         android:textSize="30dp" />
 
@@ -149,7 +158,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/bfred"
                         android:text="10 "
                         android:textSize="30dp" />
                 </LinearLayout>
@@ -158,18 +169,21 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
+                    android:background="@color/bamber"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <!--ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:src="@drawable/ontheway" />
+                        android:src="@drawable/ontheway" /-->
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/bfamber"
                         android:text="On the way "
                         android:textSize="30dp" />
 
@@ -177,7 +191,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/bfamber"
                         android:text="10 "
                         android:textSize="30dp" />
 
