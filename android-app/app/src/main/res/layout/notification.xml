@@ -16,20 +16,18 @@
 
         <Button
 
-            android:text="@+id/Button01"
-            android:id="@+id/Button01"
+            android:id="@+id/yes_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </Button>
+            android:layout_height="wrap_content"
+            android:text="Yes"></Button>
 
         <Button
 
-            android:text="@+id/Button02"
-            android:id="@+id/Button02"
+            android:id="@+id/no_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
-        </Button>
+            android:layout_alignParentRight="true"
+            android:text="No"></Button>
 
     </RelativeLayout>
 

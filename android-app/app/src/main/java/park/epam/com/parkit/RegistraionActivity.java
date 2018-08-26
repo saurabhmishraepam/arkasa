@@ -27,7 +27,7 @@ public class RegistraionActivity extends AppCompatActivity {
             "Dedicated","Floaters"
     };
 
-    Map<String,String> map = new HashMap<>();
+    Map<String,Object> map = new HashMap<>();
     HttpService httpService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

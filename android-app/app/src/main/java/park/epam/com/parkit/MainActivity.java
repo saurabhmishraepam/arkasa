@@ -28,6 +28,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.joda.time.DateTime;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     GPSTracker gps;
     HttpService httpService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -98,21 +101,30 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+                EmployeeCached cached = new EmployeeCached();
                 LocationRequestDto locationRequestDto = gps.locationRequestDto;
 
 
                 ObjectMapper mapper = new ObjectMapper();
 
-                Map<String,String> map = new HashMap<>();
-                map.put("empId",locationRequestDto.getEmpId());
+                Map<String,Object> map = new HashMap<>();
+                String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                map.put("empId",empId);
                 map.put("id",locationRequestDto.getId());
 
-                map.put("lastUpdated",new DateTime().getMillis()+"");
-                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
-                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
-                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
-                map.put("lat",locationRequestDto.getLat()+"");
-                map.put("lang",locationRequestDto.getLang()+"");
+                map.put("lastUpdated",new DateTime().getMillis());
+                map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                map.put("lat",locationRequestDto.getLat());
+                map.put("lang",locationRequestDto.getLang());
+                ObjectMapper mapper1 = new ObjectMapper();
+                try {
+                   String s =  mapper1.writeValueAsString(map);
+                    System.out.println("s ="+s);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 httpService=new HttpService();
                 Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
                 Log.d("Response Code :", response.toString());
@@ -121,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //EmployeeCached.details.setEmpId("123456");
+        EmployeeCached.details.setEmpId("123456");
 
         if (EmployeeCached.details.getEmpId() != null) {
 
@@ -132,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), LiveStatus.class);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     startActivity(intent);
                 }
             });
@@ -164,9 +176,59 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+//        Button notify = (Button) findViewById(R.id.notify);
+//
+//        notify.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                addNotificationPending("Are you coming to office or not");
+//            }
+//        });
 
-        addNotificationPending("");
 
+        addNotificationPending("First notification");
+      /*  displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");
+        displayNotification("");*/
+//        gps = new GPSTracker(MainActivity.this);
+//// check if GPS enabled
+//        if (gps.canGetLocation()) {
+//            double latitude = gps.getLatitude();
+//            double longitude = gps.getLongitude();
+//            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
+//            addNotification(gps.distanceAll);
+//
+//
+//
+//        } else {
+//            gps.showSettingsAlert();
+//        }
+//
+
+
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                LocationRequestDto locationRequestDto = gps.locationRequestDto;
+//                Map<String,String> map = new HashMap<>();
+//                map.put("empId",locationRequestDto.getEmpId());
+//                map.put("id",locationRequestDto.getId());
+//                map.put("current",locationRequestDto.getCurrent().toString());
+//
+//                map.put("lastUpdated",new DateTime().getMillis()+"");
+//                map.put("isMovingToOffice",EmployeeCached.isComingToOffice+"");
+//                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice()+"");
+//                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms()+"");
+//                httpService = new HttpService();
+//                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+//                Log.d("Response Code :", response.toString());
+//
+//            }
+//        });
 
     }
 
@@ -212,21 +274,31 @@ public class MainActivity extends AppCompatActivity {
                         .setContentTitle("Time To reach Office")
                         .setContentText(message);
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        Intent yesReceive = new Intent();
-        Bundle yesBundle = new Bundle();
-        yesBundle.putInt("userAnswer", 1);//This is the value I want to pass
-        yesReceive.putExtras(yesBundle);
-        //  yesReceive.setAction(CUSTOM_INTENT);
-        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent resultIntent = new Intent(this, NotificationView.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntentNo = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+//        Intent resultIntent1 = new Intent(this, NoNotificationView.class);
+//        PendingIntent pendingNoIntent = PendingIntent.getActivity(this, 2, resultIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        Intent yesReceive = new Intent();
+//        Bundle yesBundle = new Bundle();
+//        yesBundle.putInt("userAnswer", 1);//This is the value I want to pass
+//        yesReceive.putExtras(yesBundle);
+//
+//        Intent noReceive = new Intent();
+//        Bundle noBundle = new Bundle();
+//        noBundle.putInt("userAnswer", 1);//This is the value I want to pass
+//        noReceive.putExtras(noBundle);
+//
+//        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(this, 12345, yesReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        PendingIntent pendingIntentNo = PendingIntent.getBroadcast(this, 12345, noReceive, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        builder.addAction(R.drawable.notification, "Yes", pendingIntentYes);
-        builder.addAction(R.drawable.notification, "No", pendingIntentNo);
+//        builder.addAction(R.drawable.notification, "Yes", pendingIntent);
+//        builder.addAction(R.drawable.notification, "No", pendingNoIntent);
 
 
-        builder.setContentIntent(pendingIntentYes);
+        builder.setContentIntent(pendingIntent);
         Log.d("notification", "notify");
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -382,5 +454,9 @@ public class MainActivity extends AppCompatActivity {
         };
         timerObj.schedule(timerTaskObj, 50000, 20000);
 
+    }
+    public void onClickToAdminActivity(View view){
+        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+        startActivity(intent);
     }
 }
