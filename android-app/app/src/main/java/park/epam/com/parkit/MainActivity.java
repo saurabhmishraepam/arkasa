@@ -103,21 +103,23 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 EmployeeCached cached = new EmployeeCached();
                 LocationRequestDto locationRequestDto = gps.locationRequestDto;
-
-
                 ObjectMapper mapper = new ObjectMapper();
 
                 Map<String,Object> map = new HashMap<>();
-                String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
-                map.put("empId",empId);
-                map.put("id",locationRequestDto.getId());
+                if(locationRequestDto!=null){
 
-                map.put("lastUpdated",new DateTime().getMillis());
-                map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
-                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
-                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
-                map.put("lat",locationRequestDto.getLat());
-                map.put("lang",locationRequestDto.getLang());
+                    String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                    map.put("empId",empId);
+                    map.put("id",locationRequestDto.getId());
+
+                    map.put("lastUpdated",new DateTime().getMillis());
+                    map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                    map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                    map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                    map.put("lat",locationRequestDto.getLat());
+                    map.put("lang",locationRequestDto.getLang());
+
+                }
                 ObjectMapper mapper1 = new ObjectMapper();
                 try {
                    String s =  mapper1.writeValueAsString(map);
