@@ -18,8 +18,7 @@ public interface PredictedTimesEmp extends MongoRepository<PredictedTime, Long
     @Query("{_id:'?0'}")
     PredictedTime findBy_id(String _id);
 
-    @Query("{forDate:'?0'}")
-    List<PredictedTime> findByforDateBetween(String forDate);
+    List<PredictedTime> findByForDateBetween(String start, String end);
 
 }
 
