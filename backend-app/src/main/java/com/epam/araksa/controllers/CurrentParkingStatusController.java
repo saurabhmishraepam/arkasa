@@ -1,5 +1,6 @@
 package com.epam.araksa.controllers;
 
+import com.epam.araksa.datacache.ParkingBookedCache;
 import com.epam.araksa.dto.Dashboard;
 import com.epam.araksa.dto.EmployeeLocation;
 import com.epam.araksa.service.RelativeLocationCache;
@@ -18,8 +19,10 @@ public class CurrentParkingStatusController {
 
     @PutMapping (value = "/emp/getLiveStatus")
     public Dashboard getLiveStatus(@RequestBody EmployeeLocation employeeLocation) {
-        return  relativeLocationCache.getLocationCache(employeeLocation);
-
+        Dashboard dashboard= relativeLocationCache.getLocationCache(employeeLocation);
+        dashboard.setFloatersAvailable(
+        dashboard.getFloaterSlots()- ParkingBookedCache.booked.size());
+        return dashboard;
     }
 
 

@@ -7,7 +7,9 @@ import com.epam.araksa.dto.AppConstantsParkingSlots;
 import com.epam.araksa.dto.Dashboard;
 import com.epam.araksa.dto.EmpLocationCategoryEnum;
 import com.epam.araksa.dto.EmployeeLocation;
+import com.epam.araksa.repository.PredictedTimesEmp;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

@@ -10,6 +10,16 @@ package com.epam.araksa.dto;
 public class Dashboard {
 
 	private int dedicatedSlots;
+
+	public int getFloatersAvailable() {
+		return floatersAvailable;
+	}
+
+	public void setFloatersAvailable(int floatersAvailable) {
+		this.floatersAvailable = floatersAvailable;
+	}
+
+	private int floatersAvailable;
 	private int floaterSlots;
 	private int availableSlots;
 	private int occupiedSlots;
