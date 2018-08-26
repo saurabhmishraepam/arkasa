@@ -16,9 +16,9 @@ import java.util.Map;
 import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
 
 public class HttpService {
-    public Object sendPutRequest(String URL, Map<String,Object> params){
+    public Object sendPutRequest(String URL, Map<String, Object> params) {
         try {
-            Log.d("URL:",URL);
+            Log.d("URL:", URL);
             URL urlObj = new URL(URL);
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
             conn.setDoOutput(true);
@@ -27,15 +27,14 @@ public class HttpService {
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(20000);
             ObjectMapper mapper = new ObjectMapper();
-   // String s = "{ \"empId\":\"1234444\", \"lat\":120.0, \"lang\":0.0, \"lastUpdated\":122222, \"updateCount\":2, \"isMovingToOffice\":false, \"timeToReachOffice\":123, \"currentDistanceInKms\":105, \"isComing\":false}";
-           // String s =  "{\"empId\":\"1234444\",\"lastUpdated\":1535238852284,\"currentDistanceInKms\":14641,\"timeToReachOffice\":1608,\"id\":null,\"isMovingToOffice\":false,\"lang\":78.38135895266606,\"lat\":17.433074309217027}";
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
             wr.writeBytes(mapper.writeValueAsString(params));
             wr.flush();
             wr.close();
             int responsecode = conn.getResponseCode();
             Log.d("Data pushed:", "responsecode:" + responsecode);
-            if(responsecode == 200) {
+            String response = "";
+            if (responsecode == 200) {
                 DataInputStream dataInputStream = new DataInputStream(conn.getInputStream());
                 StringBuffer sb = new StringBuffer("");
                 String line = "";
@@ -46,22 +45,22 @@ public class HttpService {
                     break;
                 }
 
-                String response = sb.toString();
+                response = sb.toString();
                 Log.d("Response message :", response);
             }
-            return responsecode;
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("Something went wrong...","");
+        Log.d("Something went wrong...", "");
         return "";
     }
 
-    public void callHttpService(Map<String,String> params){
-        Log.d("Calling","Register httpservice");
+    public void callHttpService(Map<String, String> params) {
+        Log.d("Calling", "Register httpservice");
         try {
             String url = APP_SERVER_URL + "emp/add";
-            Log.d("URL:",url);
+            Log.d("URL:", url);
             URL urlObj = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
             conn.setDoOutput(true);
@@ -71,7 +70,7 @@ public class HttpService {
             conn.setConnectTimeout(20000);
             //conn.getPermission();
 
-          //  String paramsString = "{\"empId\":\"1234\", \"empName\":\"saurabh\", \"mobileNumber\":\"9985104433\", \"parkType\":\"DEDICATED\"}  ";
+            //  String paramsString = "{\"empId\":\"1234\", \"empName\":\"saurabh\", \"mobileNumber\":\"9985104433\", \"parkType\":\"DEDICATED\"}  ";
             ObjectMapper mapper = new ObjectMapper();
 
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
