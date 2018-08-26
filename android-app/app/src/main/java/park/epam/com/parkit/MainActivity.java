@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,9 +44,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import park.epam.com.parkit.cached.EmployeeCached;
+import park.epam.com.parkit.dto.DashboardDto;
 import park.epam.com.parkit.dto.EmployeeDetails;
 import park.epam.com.parkit.dto.LocationRequestDto;
 import park.epam.com.parkit.park.epam.com.dao.EmplyeeProvider;
+import park.epam.com.parkit.service.DashBoardService;
 import park.epam.com.parkit.service.HttpService;
 
 import static park.epam.com.parkit.constants.AppConstant.APP_SERVER_URL;
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     GPSTracker gps;
     HttpService httpService;
+    DashBoardService dashBoardService;
+    DashboardDto dashboardDto = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,13 +94,9 @@ public class MainActivity extends AppCompatActivity {
           double longitude = gps.getLongitude();
            //Toast.makeText(getApplicationContext(), gps.distanceAll, Toast.LENGTH_LONG).show();
           addNotification(gps.distanceAll);
-
-
-
       } else {
           gps.showSettingsAlert();
        }
-
 
 
         AsyncTask.execute(new Runnable() {
@@ -103,21 +104,23 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 EmployeeCached cached = new EmployeeCached();
                 LocationRequestDto locationRequestDto = gps.locationRequestDto;
-
-
                 ObjectMapper mapper = new ObjectMapper();
 
                 Map<String,Object> map = new HashMap<>();
-                String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
-                map.put("empId",empId);
-                map.put("id",locationRequestDto.getId());
+                if(locationRequestDto!=null){
 
-                map.put("lastUpdated",new DateTime().getMillis());
-                map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
-                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
-                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
-                map.put("lat",locationRequestDto.getLat());
-                map.put("lang",locationRequestDto.getLang());
+                    String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                    map.put("empId",empId);
+                    map.put("id",locationRequestDto.getId());
+
+                    map.put("lastUpdated",new DateTime().getMillis());
+                    map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                    map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                    map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                    map.put("lat",locationRequestDto.getLat());
+                    map.put("lang",locationRequestDto.getLang());
+
+                }
                 ObjectMapper mapper1 = new ObjectMapper();
                 try {
                    String s =  mapper1.writeValueAsString(map);
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
         EmployeeCached.details.setEmpId("123456");
@@ -229,9 +233,49 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
+       // callLiveStatusService();
     }
 
+    private void callLiveStatusService(){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Calling live status service..");
+                EmployeeCached cached = new EmployeeCached();
+                LocationRequestDto locationRequestDto = gps.locationRequestDto;
+
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                Map<String,Object> map = new HashMap<>();
+                String empId = locationRequestDto.getEmpId() == null ? cached.getEmployeeId() :  locationRequestDto.getEmpId();
+                map.put("empId",empId);
+                map.put("id",locationRequestDto.getId());
+
+                map.put("lastUpdated",new DateTime().getMillis());
+                map.put("isMovingToOffice",EmployeeCached.isComingToOffice);
+                map.put("timeToReachOffice",locationRequestDto.getTimeToReachOffice());
+                map.put("currentDistanceInKms",locationRequestDto.getCurrentDistanceInKms());
+                map.put("lat",locationRequestDto.getLat());
+                map.put("lang",locationRequestDto.getLang());
+                ObjectMapper mapper1 = new ObjectMapper();
+                try {
+                    String s =  mapper1.writeValueAsString(map);
+                    System.out.println("s ="+s);
+
+                httpService=new HttpService();
+                dashBoardService = new DashBoardService();
+                Object  response = httpService.sendPutRequest(APP_SERVER_URL + "emp/getLiveStatus", map);
+                DashboardDto dashboardDto = mapper1.readValue(response.toString(), DashboardDto.class);
+                dashBoardService.setDashboardDto(dashboardDto);
+                Log.d("Response Code :", response.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
